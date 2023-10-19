@@ -1,6 +1,7 @@
 package com.example.dscomputeredu.registrationtest.controller;
 
 import com.example.dscomputeredu.registrationtest.dao.RegistrationDAO;
+import com.example.dscomputeredu.registrationtest.model.CourseCompletionBO;
 import com.example.dscomputeredu.registrationtest.model.RegistrationBO;
 import com.example.dscomputeredu.registrationtest.responsehandler.CustomResponse;
 import org.springframework.web.bind.annotation.*;
@@ -55,4 +56,29 @@ private final RegistrationDAO registrationDAO;
         response.setData(registrationDAO.insert(registrationBO));
         return response;
     }
+
+    @GetMapping("/reg/completion/all")
+    public CustomResponse<CourseCompletionBO> StudentDetails(){
+        CustomResponse<CourseCompletionBO> response = new CustomResponse<>();
+        response.setCode(200);
+        response.setDesc("success");
+        response.setErrors(new ArrayList<>()); // You can add error messages if needed
+        response.setSuccess(true);
+        response.setName("Course Completion Details");
+        response.setData(registrationDAO.getallcoursecompletion());
+        return response;
+    }
+
+    @GetMapping("/reg/completion/regid")
+    public CustomResponse<CourseCompletionBO> regId(@RequestParam int regId) {
+        CustomResponse<CourseCompletionBO> response = new CustomResponse<>();
+        response.setCode(200);
+        response.setDesc("success");
+        response.setErrors(new ArrayList<>());
+        response.setSuccess(true);
+        response.setName("StudentDetails");
+        response.setData(registrationDAO.getbycourseregid(regId));
+        return response;
+    }
+
 }
