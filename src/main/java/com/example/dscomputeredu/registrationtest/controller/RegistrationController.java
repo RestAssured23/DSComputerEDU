@@ -7,9 +7,7 @@ import com.example.dscomputeredu.registrationtest.responsehandler.CustomResponse
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/test")
@@ -21,7 +19,7 @@ private final RegistrationDAO registrationDAO;
     }
 
     @GetMapping("/reg/all")
-    public CustomResponse<RegistrationBO> getallstudent() {
+    public CustomResponse<RegistrationBO> GetAllStudent() {
         CustomResponse<RegistrationBO> response = new CustomResponse<>();
         response.setCode(200);
         response.setDesc("success");
@@ -34,7 +32,7 @@ private final RegistrationDAO registrationDAO;
 
 
     @GetMapping("/reg/regid")
-    public CustomResponse<RegistrationBO> regid(@RequestParam int reg_id) {
+    public CustomResponse<RegistrationBO> RegId(@RequestParam int reg_id) {
         CustomResponse<RegistrationBO> response = new CustomResponse<>();
         response.setCode(200);
         response.setDesc("success");
@@ -46,7 +44,7 @@ private final RegistrationDAO registrationDAO;
     }
 
     @PostMapping("/reg/save")
-    public CustomResponse<RegistrationBO> newregistration(@RequestBody RegistrationBO registrationBO){
+    public CustomResponse<RegistrationBO> newRegistration(@RequestBody RegistrationBO registrationBO){
         CustomResponse<RegistrationBO> response = new CustomResponse<>();
         response.setCode(200);
         response.setDesc("success");
