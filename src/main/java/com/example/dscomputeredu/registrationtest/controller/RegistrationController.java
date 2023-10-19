@@ -18,6 +18,7 @@ private final RegistrationDAO registrationDAO;
         this.registrationDAO = registrationDAO;
     }
 
+
     @GetMapping("/reg/all")
     public CustomResponse<RegistrationBO> GetAllStudent() {
         CustomResponse<RegistrationBO> response = new CustomResponse<>();
