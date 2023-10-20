@@ -3,81 +3,44 @@ package com.example.dscomputeredu.registrationtest.controller;
 import com.example.dscomputeredu.registrationtest.dao.RegistrationDAO;
 import com.example.dscomputeredu.registrationtest.model.CourseCompletionBO;
 import com.example.dscomputeredu.registrationtest.model.RegistrationBO;
-import com.example.dscomputeredu.registrationtest.responsehandler.CustomResponse;
+import com.example.dscomputeredu.registrationtest.responsehandler.CommonResponse;
+import com.example.dscomputeredu.registrationtest.responsehandler.CustomResponseBO;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-
+import java.util.List;
 
 @RestController
 @RequestMapping("/test")
 public class RegistrationController {
-private final RegistrationDAO registrationDAO;
+    private final RegistrationDAO registrationDAO;
+    private final CommonResponse commonResponse;
 
-    public RegistrationController(RegistrationDAO registrationDAO) {
+    public RegistrationController(RegistrationDAO registrationDAO, CommonResponse commonResponse) {
         this.registrationDAO = registrationDAO;
+        this.commonResponse = commonResponse;
     }
-
 
     @GetMapping("/reg/all")
-    public CustomResponse<RegistrationBO> GetAllStudent() {
-        CustomResponse<RegistrationBO> response = new CustomResponse<>();
-        response.setCode(200);
-        response.setDesc("success");
-        response.setErrors(new ArrayList<>()); // You can add error messages if needed
-        response.setSuccess(true);
-        response.setName("StudentDetails");
-        response.setData(registrationDAO.getall());
-        return response;
+    public CustomResponseBO<List<RegistrationBO>> getAllStudents() {
+        return commonResponse.createCustomResponse("StudentDetails", registrationDAO.getall());
     }
-
-
     @GetMapping("/reg/regid")
-    public CustomResponse<RegistrationBO> RegId(@RequestParam int reg_id) {
-        CustomResponse<RegistrationBO> response = new CustomResponse<>();
-        response.setCode(200);
-        response.setDesc("success");
-        response.setErrors(new ArrayList<>());
-        response.setSuccess(true);
-        response.setName("StudentDetails");
-        response.setData(registrationDAO.getbyregid(reg_id));
-        return response;
+    public CustomResponseBO<List<RegistrationBO>> getStudentByRegId(@RequestParam int reg_id) {
+        return commonResponse.createCustomResponse("StudentDetails",registrationDAO.getbyregid(reg_id));
     }
 
     @PostMapping("/reg/save")
-    public CustomResponse<RegistrationBO> newRegistration(@RequestBody RegistrationBO registrationBO){
-        CustomResponse<RegistrationBO> response = new CustomResponse<>();
-        response.setCode(200);
-        response.setDesc("success");
-        response.setErrors(new ArrayList<>()); // You can add error messages if needed
-        response.setSuccess(true);
-        response.setName("StudentDetailsInsert");
-        response.setData(registrationDAO.insert(registrationBO));
-        return response;
+    public CustomResponseBO<List<RegistrationBO>> saveNewRegistration(@RequestBody RegistrationBO registrationBO) {
+        return commonResponse.createCustomResponse("StudentDetailsInsert", registrationDAO.insert(registrationBO));
     }
 
     @GetMapping("/reg/completion/all")
-    public CustomResponse<CourseCompletionBO> StudentDetails(){
-        CustomResponse<CourseCompletionBO> response = new CustomResponse<>();
-        response.setCode(200);
-        response.setDesc("success");
-        response.setErrors(new ArrayList<>()); // You can add error messages if needed
-        response.setSuccess(true);
-        response.setName("Course Completion Details");
-        response.setData(registrationDAO.getallcoursecompletion());
-        return response;
+    public CustomResponseBO<List<CourseCompletionBO>> getAllCourseCompletions() {
+        return commonResponse.createCustomResponse("Course Completion Details", registrationDAO.getallcoursecompletion());
     }
 
     @GetMapping("/reg/completion/regid")
-    public CustomResponse<CourseCompletionBO> regId(@RequestParam int regId) {
-        CustomResponse<CourseCompletionBO> response = new CustomResponse<>();
-        response.setCode(200);
-        response.setDesc("success");
-        response.setErrors(new ArrayList<>());
-        response.setSuccess(true);
-        response.setName("StudentDetails");
-        response.setData(registrationDAO.getbycourseregid(regId));
-        return response;
+    public CustomResponseBO<List<CourseCompletionBO>> getCourseCompletionByRegId(@RequestParam int regId) {
+        return commonResponse.createCustomResponse("Course Completion Details",registrationDAO.getbycourseregid(regId));
     }
-
 }

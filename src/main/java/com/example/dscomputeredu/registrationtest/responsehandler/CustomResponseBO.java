@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomResponse<T>{
+public class CustomResponseBO<T>{
     private int code;
     private String desc;
     private List<String> errors;
