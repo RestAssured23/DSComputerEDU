@@ -16,5 +16,4 @@ public class CommonResponse {
         response.setData((List<T>) data);
         return response;
     }
-
-}
+  }
