@@ -1,4 +1,4 @@
-package com.example.dscomputeredu.registrationtest.responsehandler;
+package com.example.dscomputeredu.registrationtest.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,11 +9,11 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomResponseBO<T>{
+public class getResponseBO<T>{
     private int code;
     private String desc;
     private List<String> errors;
     private boolean success;
     private String name;
-    private List<T> data;
+    private T data;
 }

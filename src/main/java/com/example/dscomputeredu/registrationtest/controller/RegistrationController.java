@@ -1,10 +1,9 @@
 package com.example.dscomputeredu.registrationtest.controller;
 
 import com.example.dscomputeredu.registrationtest.dao.RegistrationDAO;
-import com.example.dscomputeredu.registrationtest.model.CourseCompletionBO;
-import com.example.dscomputeredu.registrationtest.model.RegistrationBO;
+import com.example.dscomputeredu.registrationtest.model.*;
 import com.example.dscomputeredu.registrationtest.responsehandler.CommonResponse;
-import com.example.dscomputeredu.registrationtest.responsehandler.CustomResponseBO;
+import com.example.dscomputeredu.registrationtest.responsehandler.getResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,33 +13,50 @@ import java.util.List;
 public class RegistrationController {
     private final RegistrationDAO registrationDAO;
     private final CommonResponse commonResponse;
+    private final getResponse getResponse;
 
-    public RegistrationController(RegistrationDAO registrationDAO, CommonResponse commonResponse) {
+    public RegistrationController(RegistrationDAO registrationDAO, CommonResponse commonResponse, com.example.dscomputeredu.registrationtest.responsehandler.getResponse getResponse) {
         this.registrationDAO = registrationDAO;
         this.commonResponse = commonResponse;
+        this.getResponse = getResponse;
     }
 
     @GetMapping("/reg/all")
-    public CustomResponseBO<List<RegistrationBO>> getAllStudents() {
+    public GetCustomResponseBO<List<RegistrationBO>> getAllStudents() {
         return commonResponse.createCustomResponse("StudentDetails", registrationDAO.getall());
     }
     @GetMapping("/reg/regid")
-    public CustomResponseBO<List<RegistrationBO>> getStudentByRegId(@RequestParam int reg_id) {
+    public GetCustomResponseBO<List<RegistrationBO>> getStudentByRegId(@RequestParam int reg_id) {
         return commonResponse.createCustomResponse("StudentDetails",registrationDAO.getbyregid(reg_id));
     }
 
     @PostMapping("/reg/save")
-    public CustomResponseBO<List<RegistrationBO>> saveNewRegistration(@RequestBody RegistrationBO registrationBO) {
+    public GetCustomResponseBO<List<RegistrationBO>> saveNewRegistration(@RequestBody RegistrationBO registrationBO) {
         return commonResponse.createCustomResponse("StudentDetailsInsert", registrationDAO.insert(registrationBO));
     }
 
     @GetMapping("/reg/completion/all")
-    public CustomResponseBO<List<CourseCompletionBO>> getAllCourseCompletions() {
+    public GetCustomResponseBO<List<CourseCompletionBO>> getAllCourseCompletions() {
         return commonResponse.createCustomResponse("Course Completion Details", registrationDAO.getallcoursecompletion());
     }
 
     @GetMapping("/reg/completion/regid")
-    public CustomResponseBO<List<CourseCompletionBO>> getCourseCompletionByRegId(@RequestParam int regId) {
+    public GetCustomResponseBO<List<CourseCompletionBO>> getCourseCompletionByRegId(@RequestParam int regId) {
         return commonResponse.createCustomResponse("Course Completion Details",registrationDAO.getbycourseregid(regId));
+    }
+
+    @GetMapping("/reg/logindetails")
+    public getResponseBO<LoginBO> getLoginDetails(@RequestParam int regID) {
+        LoginBO loginDetails = registrationDAO.getLoginDetails(regID);
+        return getResponse.createGetResponse("Login Details", loginDetails);
+    }
+
+    @GetMapping("/reg/logindetails/all")
+    public GetCustomResponseBO<List<LoginBO>> getlogindetails(){
+        return commonResponse.createCustomResponse("Login Details",registrationDAO.getAllLogin());
+    }
+    @PostMapping("/reg/logindetails")
+    public GetCustomResponseBO<List<LoginBO>> savelogin(){
+        return commonResponse.createCustomResponse("Login Details",registrationDAO.postlogin());
     }
 }

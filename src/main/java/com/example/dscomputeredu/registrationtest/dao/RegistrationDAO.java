@@ -1,6 +1,7 @@
 package com.example.dscomputeredu.registrationtest.dao;
 
 import com.example.dscomputeredu.registrationtest.model.CourseCompletionBO;
+import com.example.dscomputeredu.registrationtest.model.LoginBO;
 import com.example.dscomputeredu.registrationtest.model.RegistrationBO;
 
 import java.util.List;
@@ -17,4 +18,12 @@ public interface RegistrationDAO {
 
 
     List<CourseCompletionBO> getbycourseregid(int regId);
+   // List<LoginBO> getAllLogin();
+
+    List<LoginBO> postlogin();
+
+    List<LoginBO> getAllLogin();
+
+    LoginBO getLoginDetails(int regID);
 }
+
