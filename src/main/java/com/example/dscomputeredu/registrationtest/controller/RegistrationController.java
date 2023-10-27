@@ -15,7 +15,7 @@ public class RegistrationController {
     private final CommonResponse commonResponse;
     private final getResponse getResponse;
 
-    public RegistrationController(RegistrationDAO registrationDAO, CommonResponse commonResponse,com.example.dscomputeredu.registrationtest.responsehandler.getResponse getResponse) {
+    public RegistrationController(RegistrationDAO registrationDAO, CommonResponse commonResponse,getResponse getResponse) {
         this.registrationDAO = registrationDAO;
         this.commonResponse = commonResponse;
         this.getResponse = getResponse;
