@@ -15,7 +15,7 @@ public class RegistrationController {
     private final CommonResponse commonResponse;
     private final getResponse getResponse;
 
-    public RegistrationController(RegistrationDAO registrationDAO, CommonResponse commonResponse, com.example.dscomputeredu.registrationtest.responsehandler.getResponse getResponse) {
+    public RegistrationController(RegistrationDAO registrationDAO, CommonResponse commonResponse,com.example.dscomputeredu.registrationtest.responsehandler.getResponse getResponse) {
         this.registrationDAO = registrationDAO;
         this.commonResponse = commonResponse;
         this.getResponse = getResponse;
@@ -34,6 +34,7 @@ public class RegistrationController {
     public GetCustomResponseBO<List<RegistrationBO>> saveNewRegistration(@RequestBody RegistrationBO registrationBO) {
         return commonResponse.createCustomResponse("StudentDetailsInsert", registrationDAO.insert(registrationBO));
     }
+
 
     @GetMapping("/reg/completion/all")
     public GetCustomResponseBO<List<CourseCompletionBO>> getAllCourseCompletions() {
@@ -55,8 +56,10 @@ public class RegistrationController {
     public GetCustomResponseBO<List<LoginBO>> getlogindetails(){
         return commonResponse.createCustomResponse("Login Details",registrationDAO.getAllLogin());
     }
-    @PostMapping("/reg/logindetails")
-    public GetCustomResponseBO<List<LoginBO>> savelogin(){
-        return commonResponse.createCustomResponse("Login Details",registrationDAO.postlogin());
+
+    @PutMapping("/reg/logindetails")
+    public GetCustomResponseBO<List<LoginBO>> insertLogin(@RequestBody LoginBO loginBO){
+        return commonResponse.createCustomResponse("Login Details",registrationDAO.createLogin(loginBO));
     }
+
 }

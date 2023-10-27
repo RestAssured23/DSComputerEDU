@@ -17,5 +17,14 @@ public class CommonResponse {
         response.setData((List<T>) data);
         return response;
     }
-
+    public <T> GetCustomResponseBO<T> CustomResponsepost(String name, T data) {
+        GetCustomResponseBO<T> response = new GetCustomResponseBO<>();
+        response.setCode(200);
+        response.setDesc("success");
+        response.setErrors(new ArrayList<>());
+        response.setSuccess(true);
+        response.setName(name);
+        response.setData((List<T>) data);
+        return response;
+    }
   }
