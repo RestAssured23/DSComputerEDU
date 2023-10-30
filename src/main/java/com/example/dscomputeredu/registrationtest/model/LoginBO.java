@@ -13,4 +13,7 @@ public class LoginBO {
     private String password;
     private String acc_createddate;
     private String registration_date;
+
+    public LoginBO(String dbUpdateFailed, Object o, Object o1, int i) {
+    }
 }

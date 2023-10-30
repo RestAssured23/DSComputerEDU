@@ -3,6 +3,7 @@ package com.example.dscomputeredu.registrationtest.dao;
 import com.example.dscomputeredu.registrationtest.model.CourseCompletionBO;
 import com.example.dscomputeredu.registrationtest.model.LoginBO;
 import com.example.dscomputeredu.registrationtest.model.RegistrationBO;
+import javassist.NotFoundException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -11,20 +12,20 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 @Repository
 public class RegistrationIMPL implements RegistrationDAO {
-/*    Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    String isoFormat = sdf.format(new Date(currentTimestamp.getTime()));*/
 
     Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     String isoFormat = sdf.format(new Date(currentTimestamp.getTime()));
     final
     JdbcTemplate jdbcTemplate;
+    int userId;
 
     public RegistrationIMPL(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -36,23 +37,36 @@ public class RegistrationIMPL implements RegistrationDAO {
                         new BeanPropertyRowMapper<>(RegistrationBO.class));
     }
 
-    @Override
+ /*   @Override
     public List<RegistrationBO> getbyregid(int reg_id) {
         return jdbcTemplate.query
                 ("select * from registration where reg_id=?",
                         new BeanPropertyRowMapper<>(RegistrationBO.class), reg_id);
+    }*/
+
+    @Override
+    public List<RegistrationBO> getbyregid(int reg_id) throws NotFoundException {
+        List<RegistrationBO> registrationList = jdbcTemplate.query
+                ("select * from registration where reg_id=?",
+                        new BeanPropertyRowMapper<>(RegistrationBO.class), reg_id);
+        if (registrationList.isEmpty()) {
+            throw new NotFoundException("No records found for reg_id: " + reg_id);
+        }
+
+        return registrationList;
     }
 
     @Override
     public List<RegistrationBO> insert(RegistrationBO registrationBO) {
+        List<RegistrationBO> inserteddata =new ArrayList<>();
         try {
-/*            // Validate mobile number
+           /* // Validate mobile number
             String mobilePattern = "\\d{10}"; // Assuming mobile number should be 10 digits
             String mobile = registrationBO.getMobile();
             if (!mobile.matches(mobilePattern)) {
                 throw new IllegalArgumentException("Invalid mobile number format");
-            }*/
-
+            }
+*/
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(
@@ -81,9 +95,12 @@ public class RegistrationIMPL implements RegistrationDAO {
                 ps.setString(16, registrationBO.getCourse_name());
                 return ps;
             }, keyHolder);
+
             Map<String, Object> keys = keyHolder.getKeys();
             assert keys != null;
-            int userId = (int) keys.get("reg_id");
+            userId = (int) keys.get("reg_id");
+
+            //inserteddata.add(keys);
 
             String studentName = registrationBO.getFirst_name() + " " + registrationBO.getLast_name();
             String courseName = registrationBO.getCourse_name();
@@ -97,7 +114,7 @@ public class RegistrationIMPL implements RegistrationDAO {
                 insertPs.setString(2, isoFormat);
                 return insertPs;
             });
-
+            inserteddata.add(registrationBO);
             //coursecompletion table reg_id insert
             jdbcTemplate.update(
                     "INSERT INTO coursecompletion (reg_id) VALUES (?)",
@@ -115,7 +132,7 @@ public class RegistrationIMPL implements RegistrationDAO {
 
             e.printStackTrace(); // This is a basic example. You may want to handle it differently.
         }
-        return null;
+        return inserteddata;
     }
 
     @Override
@@ -140,6 +157,11 @@ public class RegistrationIMPL implements RegistrationDAO {
                 new BeanPropertyRowMapper<>(LoginBO.class), regID
         );
     }
+ /*   @Override
+    public LoginBO getAllLogin() {
+        return jdbcTemplate.query(
+                "select * from dslogin", new BeanPropertyRowMapper<LoginBO>(LoginBO.class)
+        );*/
 
     @Override
     public List<LoginBO> getAllLogin() {
@@ -148,9 +170,9 @@ public class RegistrationIMPL implements RegistrationDAO {
         );
     }
 
-    @Override
-    public List<LoginBO> createLogin(LoginBO loginBO) {
-     /*   try {*/
+    /*   @Override
+       public List<LoginBO> createLogin(LoginBO loginBO) {
+        *//*   try {*//*
             jdbcTemplate.update(connection -> {
                 PreparedStatement updatePs = connection.prepareStatement(
                         "UPDATE dslogin SET email = ?, password = ?,acc_createddate=? WHERE reg_id = ?");
@@ -160,10 +182,37 @@ public class RegistrationIMPL implements RegistrationDAO {
                 updatePs.setInt(4, loginBO.getReg_id()); // Assuming reg_id is an integer
                 return updatePs;
             });
-      /*  }catch(Exception e){
+      *//*  }catch(Exception e){
             e.printStackTrace();
-        }*/
+        }*//*
         return null;
+    }*/
+    @Override
+    public List<LoginBO> createLogin(LoginBO loginBO) {
+        List<LoginBO> updatedLoginBOs = new ArrayList<>(); // Initialize the list
+
+        if (loginBO.getEmail() != null && !loginBO.getEmail().isEmpty() && loginBO.getPassword() != null && !loginBO.getPassword().isEmpty()) {
+            try {
+                jdbcTemplate.update(connection -> {
+                    PreparedStatement updatePs = connection.prepareStatement(
+                            "UPDATE dslogin SET email = ?, password = ?, acc_createddate = ? WHERE reg_id = ?");
+                    updatePs.setString(1, loginBO.getEmail());
+                    updatePs.setString(2, loginBO.getPassword());
+                    updatePs.setString(3, isoFormat);
+                    updatePs.setInt(4, loginBO.getReg_id()); // Assuming reg_id is an integer
+                    return updatePs;
+                });
+                // Add the successfully updated LoginBO to the list
+                updatedLoginBOs.add(loginBO);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            updatedLoginBOs.add(new LoginBO("DB update failed", null, null, 0)); // Create a LoginBO with the failure message
+        }
+
+        return updatedLoginBOs; // Return the list with updated or error messages
     }
 }
 

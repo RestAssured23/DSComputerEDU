@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,5 +27,6 @@ public class RegistrationBO {
     private String modified_date;
     private String father_name;
     private String course_name;
+   // private List<T> data;
 
 }

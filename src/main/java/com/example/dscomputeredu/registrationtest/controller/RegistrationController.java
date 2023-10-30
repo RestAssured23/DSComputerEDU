@@ -4,6 +4,7 @@ import com.example.dscomputeredu.registrationtest.dao.RegistrationDAO;
 import com.example.dscomputeredu.registrationtest.model.*;
 import com.example.dscomputeredu.registrationtest.responsehandler.CommonResponse;
 import com.example.dscomputeredu.registrationtest.responsehandler.getResponse;
+import javassist.NotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class RegistrationController {
         return commonResponse.createCustomResponse("StudentDetails", registrationDAO.getall());
     }
     @GetMapping("/reg/regid")
-    public GetCustomResponseBO<List<RegistrationBO>> getStudentByRegId(@RequestParam int reg_id) {
+    public GetCustomResponseBO<List<RegistrationBO>> getStudentByRegId(@RequestParam int reg_id) throws NotFoundException {
         return commonResponse.createCustomResponse("StudentDetails",registrationDAO.getbyregid(reg_id));
     }
 
@@ -34,7 +35,6 @@ public class RegistrationController {
     public GetCustomResponseBO<List<RegistrationBO>> saveNewRegistration(@RequestBody RegistrationBO registrationBO) {
         return commonResponse.createCustomResponse("StudentDetailsInsert", registrationDAO.insert(registrationBO));
     }
-
 
     @GetMapping("/reg/completion/all")
     public GetCustomResponseBO<List<CourseCompletionBO>> getAllCourseCompletions() {
