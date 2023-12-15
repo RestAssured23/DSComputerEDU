@@ -106,7 +106,7 @@ String defaultpassword="asdfasdf";
                             "INSERT INTO studentinfo (reg_id, name,email,password,mobile,coursename,flag,registration_date)" +
                                     " VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
-             //       studentInfo.setInt(1, regId);
+                   studentInfo.setInt(1, regId);
                     studentInfo.setString(2, studentName);
                     studentInfo.setString(3, email);
                     studentInfo.setString(4,defaultpassword);
