@@ -1,13 +1,11 @@
-package com.example.dscomputeredu.registrationtest.responsehandler;
+package com.example.dscomputeredu.responsehandler;
 
-import com.example.dscomputeredu.registrationtest.model.GetCustomResponseBO;
-import com.example.dscomputeredu.registrationtest.model.getResponseBO;
+import com.example.dscomputeredu.model.getResponseBO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class getResponse {
