@@ -1,6 +1,8 @@
-package com.example.dscomputeredu.registrationtest.responsehandler;
+package com.example.dscomputeredu.responsehandler;
 
-import com.example.dscomputeredu.registrationtest.model.GetCustomResponseBO;
+import com.example.dscomputeredu.model.GetCustomResponseBO;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -17,4 +19,5 @@ public class CommonResponse {
         response.setData((List<T>) data);
         return response;
     }
-  }
+}
+

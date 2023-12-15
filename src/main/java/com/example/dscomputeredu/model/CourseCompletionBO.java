@@ -1,4 +1,4 @@
-package com.example.dscomputeredu.registrationtest.model;
+package com.example.dscomputeredu.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

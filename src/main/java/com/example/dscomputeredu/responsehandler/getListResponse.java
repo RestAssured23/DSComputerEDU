@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 
 @RestController
-public class getResponse {
+public class getListResponse {
     private final ObjectMapper objectMapper;
 @Autowired
-    public getResponse(ObjectMapper objectMapper) {
+    public getListResponse(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 

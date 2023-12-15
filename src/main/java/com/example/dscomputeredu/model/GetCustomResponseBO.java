@@ -1,4 +1,4 @@
-package com.example.dscomputeredu.registrationtest.model;
+package com.example.dscomputeredu.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +15,6 @@ public class GetCustomResponseBO<T> {
     private List<String> errors;
     private boolean success;
     private String name;
-   // private T data;
-     private List<T> data;
+ //   private T data;
+ private List<T> data;
 }
